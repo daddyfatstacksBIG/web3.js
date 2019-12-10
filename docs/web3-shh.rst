@@ -585,7 +585,7 @@ Returns
 -------
 
 
-``String`` - Key ID on success and an error on failure.
+``Promise<string>|undefined`` - Returns the Key ID as Promise or undefined if a callback is defined.
 
 
 -------
@@ -1022,5 +1022,3 @@ Example
         "topic": "0x01020304",
         "ttl": 50
     },{...}]
-
-

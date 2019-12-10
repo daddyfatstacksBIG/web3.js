@@ -2,8 +2,8 @@
 
 This is a sub package of [web3.js][repo]
 
-This is the contract package to be used in the `web3-eth` package.
-Please read the [documentation][docs] for more.
+This is the contract package to be used in the `web3-eth` package. Please read
+the [documentation][docs] for more.
 
 ## Installation
 
@@ -27,17 +27,17 @@ This will expose the `EthEns` object on the window object.
 ## Usage
 
 ```js
-    var eth = new Web3Eth(web3.currentProvider);
-    var ens = new EthEns(eth);
-    
-    ens.getAddress('ethereum.eth').then(function (result) {
-      console.log(result);
-    });
+var eth = new Web3Eth(web3.currentProvider);
+var ens = new EthEns(eth);
+
+ens.getAddress("ethereum.eth").then(function(result) {
+    console.log(result);
+});
 ```
 
+## Types
 
+All the typescript typings are placed in the types folder.
 
 [docs]: http://web3js.readthedocs.io/en/1.0/
 [repo]: https://github.com/ethereum/web3.js
-
-

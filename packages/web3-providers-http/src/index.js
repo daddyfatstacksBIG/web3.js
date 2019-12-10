@@ -14,7 +14,8 @@
     You should have received a copy of the GNU Lesser General Public License
     along with web3.js.  If not, see <http://www.gnu.org/licenses/>.
 */
-/** @file httpprovider.js
+/**
+ * @file httpprovider.js
  * @authors:
  *   Marek Kotewicz <marek@parity.io>
  *   Marian Oancea
@@ -22,11 +23,10 @@
  * @date 2015
  */
 
-var errors = require('web3-core-helpers').errors;
-var XHR2 = require('xhr2-cookies').XMLHttpRequest // jshint ignore: line
-var http = require('http');
-var https = require('https');
-
+var errors = require("web3-core-helpers").errors;
+var XHR2 = require("xhr2-cookies").XMLHttpRequest; // jshint ignore: line
+var http = require("http");
+var https = require("https");
 
 /**
  * HttpProvider should be used to send rpc calls over http
@@ -35,33 +35,42 @@ var HttpProvider = function HttpProvider(host, options) {
     options = options || {};
 
     var keepAlive =
-        (options.keepAlive === true || options.keepAlive !== false) ?
-            true :
-            false;
-    this.host = host || 'http://localhost:8545';
-    if (this.host.substring(0,5) === "https") {
+        options.keepAlive === true || options.keepAlive !== false
+            ? true
+            : false;
+    this.host = host || "http://localhost:8545";
+    if (this.host.substring(0, 5) === "https") {
         this.httpsAgent = new https.Agent({ keepAlive: keepAlive });
-    }else{
+    } else {
         this.httpAgent = new http.Agent({ keepAlive: keepAlive });
     }
+
+    this.withCredentials = options.withCredentials || false;
     this.timeout = options.timeout || 0;
     this.headers = options.headers;
     this.connected = false;
 };
 
-HttpProvider.prototype._prepareRequest = function(){
-    var request = new XHR2();
-    request.nodejsSet({
-        httpsAgent:this.httpsAgent,
-        httpAgent:this.httpAgent
-    });
+HttpProvider.prototype._prepareRequest = function() {
+    var request;
 
-    request.open('POST', this.host, true);
-    request.setRequestHeader('Content-Type','application/json');
-    request.timeout = this.timeout && this.timeout !== 1 ? this.timeout : 0;
-    request.withCredentials = true;
+    // the current runtime is a browser
+    if (typeof XMLHttpRequest !== "undefined") {
+        request = new XMLHttpRequest();
+    } else {
+        request = new XHR2();
+        request.nodejsSet({
+            httpsAgent: this.httpsAgent,
+            httpAgent: this.httpAgent
+        });
+    }
 
-    if(this.headers) {
+    request.open("POST", this.host, true);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.timeout = this.timeout;
+    request.withCredentials = this.withCredentials;
+
+    if (this.headers) {
         this.headers.forEach(function(header) {
             request.setRequestHeader(header.name, header.value);
         });
@@ -77,7 +86,7 @@ HttpProvider.prototype._prepareRequest = function(){
  * @param {Object} payload
  * @param {Function} callback triggered on end with (err, result)
  */
-HttpProvider.prototype.send = function (payload, callback) {
+HttpProvider.prototype.send = function(payload, callback) {
     var _this = this;
     var request = this._prepareRequest();
 
@@ -88,7 +97,7 @@ HttpProvider.prototype.send = function (payload, callback) {
 
             try {
                 result = JSON.parse(result);
-            } catch(e) {
+            } catch (e) {
                 error = errors.InvalidResponse(request.responseText);
             }
 
@@ -104,15 +113,24 @@ HttpProvider.prototype.send = function (payload, callback) {
 
     try {
         request.send(JSON.stringify(payload));
-    } catch(error) {
+    } catch (error) {
         this.connected = false;
         callback(errors.InvalidConnection(this.host));
     }
 };
 
-HttpProvider.prototype.disconnect = function () {
-    //NO OP
+HttpProvider.prototype.disconnect = function() {
+    // NO OP
 };
 
+/**
+ * Returns the desired boolean.
+ *
+ * @method supportsSubscriptions
+ * @returns {boolean}
+ */
+HttpProvider.prototype.supportsSubscriptions = function() {
+    return false;
+};
 
 module.exports = HttpProvider;
