@@ -20,12 +20,12 @@
  * @date 2017
  */
 
-var _ = require('underscore');
-var BN = require('bn.js');
-var numberToBN = require('number-to-bn');
-var utf8 = require('utf8');
+var _ = require("underscore");
+var BN = require("bn.js");
+var numberToBN = require("number-to-bn");
+var utf8 = require("utf8");
 var Hash = require("eth-lib/lib/hash");
-var ethereumBloomFilters = require('ethereum-bloom-filters');
+var ethereumBloomFilters = require("ethereum-bloom-filters");
 
 /**
  * Returns true if object is BN, otherwise false
@@ -34,7 +34,9 @@ var ethereumBloomFilters = require('ethereum-bloom-filters');
  * @param {Object} object
  * @return {Boolean}
  */
-var isBN = function(object) { return BN.isBN(object); };
+var isBN = function(object) {
+    return BN.isBN(object);
+};
 
 /**
  * Returns true if object is BigNumber, otherwise false
@@ -44,8 +46,9 @@ var isBN = function(object) { return BN.isBN(object); };
  * @return {Boolean}
  */
 var isBigNumber = function(object) {
-  return object && object.constructor &&
-         object.constructor.name === 'BigNumber';
+    return (
+        object && object.constructor && object.constructor.name === "BigNumber"
+    );
 };
 
 /**
@@ -56,11 +59,11 @@ var isBigNumber = function(object) {
  * @return {BN} BN
  */
 var toBN = function(number) {
-  try {
-    return numberToBN.apply(null, arguments);
-  } catch (e) {
-    throw new Error(e + ' Given value: "' + number + '"');
-  }
+    try {
+        return numberToBN.apply(null, arguments);
+    } catch (e) {
+        throw new Error(e + ' Given value: "' + number + '"');
+    }
 };
 
 /**
@@ -71,8 +74,14 @@ var toBN = function(number) {
  * @param {Number|String|BN} number
  * @return {String}
  */
-var toTwosComplement = function(
-    number) { return '0x' + toBN(number).toTwos(256).toString(16, 64); };
+var toTwosComplement = function(number) {
+    return (
+        "0x" +
+        toBN(number)
+            .toTwos(256)
+            .toString(16, 64)
+    );
+};
 
 /**
  * Checks if the given string is an address
@@ -82,17 +91,19 @@ var toTwosComplement = function(
  * @return {Boolean}
  */
 var isAddress = function(address) {
-  // check if it has the basic requirements of an address
-  if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
-    return false;
-    // If it's ALL lowercase or ALL upppercase
-  } else if (/^(0x|0X)?[0-9a-f]{40}$/.test(address) ||
-             /^(0x|0X)?[0-9A-F]{40}$/.test(address)) {
-    return true;
-    // Otherwise check each case
-  } else {
-    return checkAddressChecksum(address);
-  }
+    // check if it has the basic requirements of an address
+    if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
+        return false;
+        // If it's ALL lowercase or ALL upppercase
+    } else if (
+        /^(0x|0X)?[0-9a-f]{40}$/.test(address) ||
+        /^(0x|0X)?[0-9A-F]{40}$/.test(address)
+    ) {
+        return true;
+        // Otherwise check each case
+    } else {
+        return checkAddressChecksum(address);
+    }
 };
 
 /**
@@ -103,20 +114,22 @@ var isAddress = function(address) {
  * @return {Boolean}
  */
 var checkAddressChecksum = function(address) {
-  // Check each case
-  address = address.replace(/^0x/i, '');
-  var addressHash = sha3(address.toLowerCase()).replace(/^0x/i, '');
+    // Check each case
+    address = address.replace(/^0x/i, "");
+    var addressHash = sha3(address.toLowerCase()).replace(/^0x/i, "");
 
-  for (var i = 0; i < 40; i++) {
-    // the nth letter should be uppercase if the nth digit of casemap is 1
-    if ((parseInt(addressHash[i], 16) > 7 &&
-         address[i].toUpperCase() !== address[i]) ||
-        (parseInt(addressHash[i], 16) <= 7 &&
-         address[i].toLowerCase() !== address[i])) {
-      return false;
+    for (var i = 0; i < 40; i++) {
+        // the nth letter should be uppercase if the nth digit of casemap is 1
+        if (
+            (parseInt(addressHash[i], 16) > 7 &&
+                address[i].toUpperCase() !== address[i]) ||
+            (parseInt(addressHash[i], 16) <= 7 &&
+                address[i].toLowerCase() !== address[i])
+        ) {
+            return false;
+        }
     }
-  }
-  return true;
+    return true;
 };
 
 /**
@@ -129,14 +142,17 @@ var checkAddressChecksum = function(address) {
  * @returns {String} right aligned string
  */
 var leftPad = function(string, chars, sign) {
-  var hasPrefix = /^0x/i.test(string) || typeof string === 'number';
-  string = string.toString(16).replace(/^0x/i, '');
+    var hasPrefix = /^0x/i.test(string) || typeof string === "number";
+    string = string.toString(16).replace(/^0x/i, "");
 
-  var padding =
-      (chars - string.length + 1 >= 0) ? chars - string.length + 1 : 0;
+    var padding =
+        chars - string.length + 1 >= 0 ? chars - string.length + 1 : 0;
 
-  return (hasPrefix ? '0x' : '') + new Array(padding).join(sign ? sign : "0") +
-         string;
+    return (
+        (hasPrefix ? "0x" : "") +
+        new Array(padding).join(sign ? sign : "0") +
+        string
+    );
 };
 
 /**
@@ -149,14 +165,17 @@ var leftPad = function(string, chars, sign) {
  * @returns {String} right aligned string
  */
 var rightPad = function(string, chars, sign) {
-  var hasPrefix = /^0x/i.test(string) || typeof string === 'number';
-  string = string.toString(16).replace(/^0x/i, '');
+    var hasPrefix = /^0x/i.test(string) || typeof string === "number";
+    string = string.toString(16).replace(/^0x/i, "");
 
-  var padding =
-      (chars - string.length + 1 >= 0) ? chars - string.length + 1 : 0;
+    var padding =
+        chars - string.length + 1 >= 0 ? chars - string.length + 1 : 0;
 
-  return (hasPrefix ? '0x' : '') + string +
-         (new Array(padding).join(sign ? sign : "0"));
+    return (
+        (hasPrefix ? "0x" : "") +
+        string +
+        new Array(padding).join(sign ? sign : "0")
+    );
 };
 
 /**
@@ -167,24 +186,30 @@ var rightPad = function(string, chars, sign) {
  * @returns {String} hex representation of input string
  */
 var utf8ToHex = function(str) {
-  str = utf8.encode(str);
-  var hex = "";
+    str = utf8.encode(str);
+    var hex = "";
 
-  // remove \u0000 padding from either side
-  str = str.replace(/^(?:\u0000)*/, '');
-  str = str.split("").reverse().join("");
-  str = str.replace(/^(?:\u0000)*/, '');
-  str = str.split("").reverse().join("");
+    // remove \u0000 padding from either side
+    str = str.replace(/^(?:\u0000)*/, "");
+    str = str
+        .split("")
+        .reverse()
+        .join("");
+    str = str.replace(/^(?:\u0000)*/, "");
+    str = str
+        .split("")
+        .reverse()
+        .join("");
 
-  for (var i = 0; i < str.length; i++) {
-    var code = str.charCodeAt(i);
-    // if (code !== 0) {
-    var n = code.toString(16);
-    hex += n.length < 2 ? '0' + n : n;
-    // }
-  }
+    for (var i = 0; i < str.length; i++) {
+        var code = str.charCodeAt(i);
+        // if (code !== 0) {
+        var n = code.toString(16);
+        hex += n.length < 2 ? "0" + n : n;
+        // }
+    }
 
-  return "0x" + hex;
+    return "0x" + hex;
 };
 
 /**
@@ -195,29 +220,37 @@ var utf8ToHex = function(str) {
  * @returns {String} ascii string representation of hex value
  */
 var hexToUtf8 = function(hex) {
-  if (!isHexStrict(hex))
-    throw new Error('The parameter "' + hex + '" must be a valid HEX string.');
+    if (!isHexStrict(hex))
+        throw new Error(
+            'The parameter "' + hex + '" must be a valid HEX string.'
+        );
 
-  var str = "";
-  var code = 0;
-  hex = hex.replace(/^0x/i, '');
+    var str = "";
+    var code = 0;
+    hex = hex.replace(/^0x/i, "");
 
-  // remove 00 padding from either side
-  hex = hex.replace(/^(?:00)*/, '');
-  hex = hex.split("").reverse().join("");
-  hex = hex.replace(/^(?:00)*/, '');
-  hex = hex.split("").reverse().join("");
+    // remove 00 padding from either side
+    hex = hex.replace(/^(?:00)*/, "");
+    hex = hex
+        .split("")
+        .reverse()
+        .join("");
+    hex = hex.replace(/^(?:00)*/, "");
+    hex = hex
+        .split("")
+        .reverse()
+        .join("");
 
-  var l = hex.length;
+    var l = hex.length;
 
-  for (var i = 0; i < l; i += 2) {
-    code = parseInt(hex.substr(i, 2), 16);
-    // if (code !== 0) {
-    str += String.fromCharCode(code);
-    // }
-  }
+    for (var i = 0; i < l; i += 2) {
+        code = parseInt(hex.substr(i, 2), 16);
+        // if (code !== 0) {
+        str += String.fromCharCode(code);
+        // }
+    }
 
-  return utf8.decode(str);
+    return utf8.decode(str);
 };
 
 /**
@@ -228,15 +261,17 @@ var hexToUtf8 = function(hex) {
  * @return {String}
  */
 var hexToNumber = function(value) {
-  if (!value) {
-    return value;
-  }
+    if (!value) {
+        return value;
+    }
 
-  if (_.isString(value) && !isHexStrict(value)) {
-    throw new Error('Given value "' + value + '" is not a valid hex string.');
-  }
+    if (_.isString(value) && !isHexStrict(value)) {
+        throw new Error(
+            'Given value "' + value + '" is not a valid hex string.'
+        );
+    }
 
-  return toBN(value).toNumber();
+    return toBN(value).toNumber();
 };
 
 /**
@@ -247,14 +282,15 @@ var hexToNumber = function(value) {
  * @return {String}
  */
 var hexToNumberString = function(value) {
-  if (!value)
-    return value;
+    if (!value) return value;
 
-  if (_.isString(value) && !isHexStrict(value)) {
-    throw new Error('Given value "' + value + '" is not a valid hex string.');
-  }
+    if (_.isString(value) && !isHexStrict(value)) {
+        throw new Error(
+            'Given value "' + value + '" is not a valid hex string.'
+        );
+    }
 
-  return toBN(value).toString(10);
+    return toBN(value).toString(10);
 };
 
 /**
@@ -265,18 +301,18 @@ var hexToNumberString = function(value) {
  * @return {String}
  */
 var numberToHex = function(value) {
-  if (_.isNull(value) || _.isUndefined(value)) {
-    return value;
-  }
+    if (_.isNull(value) || _.isUndefined(value)) {
+        return value;
+    }
 
-  if (!isFinite(value) && !isHexStrict(value)) {
-    throw new Error('Given input "' + value + '" is not a number.');
-  }
+    if (!isFinite(value) && !isHexStrict(value)) {
+        throw new Error('Given input "' + value + '" is not a number.');
+    }
 
-  var number = toBN(value);
-  var result = number.toString(16);
+    var number = toBN(value);
+    var result = number.toString(16);
 
-  return number.lt(new BN(0)) ? '-0x' + result.substr(1) : '0x' + result;
+    return number.lt(new BN(0)) ? "-0x" + result.substr(1) : "0x" + result;
 };
 
 /**
@@ -289,13 +325,13 @@ var numberToHex = function(value) {
  * @return {String} the hex string
  */
 var bytesToHex = function(bytes) {
-  for (var hex = [], i = 0; i < bytes.length; i++) {
-    /* jshint ignore:start */
-    hex.push((bytes[i] >>> 4).toString(16));
-    hex.push((bytes[i] & 0xF).toString(16));
-    /* jshint ignore:end */
-  }
-  return '0x' + hex.join("");
+    for (var hex = [], i = 0; i < bytes.length; i++) {
+        /* jshint ignore:start */
+        hex.push((bytes[i] >>> 4).toString(16));
+        hex.push((bytes[i] & 0xf).toString(16));
+        /* jshint ignore:end */
+    }
+    return "0x" + hex.join("");
 };
 
 /**
@@ -308,17 +344,17 @@ var bytesToHex = function(bytes) {
  * @return {Array} the byte array
  */
 var hexToBytes = function(hex) {
-  hex = hex.toString(16);
+    hex = hex.toString(16);
 
-  if (!isHexStrict(hex)) {
-    throw new Error('Given value "' + hex + '" is not a valid hex string.');
-  }
+    if (!isHexStrict(hex)) {
+        throw new Error('Given value "' + hex + '" is not a valid hex string.');
+    }
 
-  hex = hex.replace(/^0x/i, '');
+    hex = hex.replace(/^0x/i, "");
 
-  for (var bytes = [], c = 0; c < hex.length; c += 2)
-    bytes.push(parseInt(hex.substr(c, 2), 16));
-  return bytes;
+    for (var bytes = [], c = 0; c < hex.length; c += 2)
+        bytes.push(parseInt(hex.substr(c, 2), 16));
+    return bytes;
 };
 
 /**
@@ -332,37 +368,38 @@ var hexToBytes = function(hex) {
  * @return {String}
  */
 var toHex = function(value, returnType) {
-  /*jshint maxcomplexity: false */
+    /*jshint maxcomplexity: false */
 
-  if (isAddress(value)) {
-    return returnType ? 'address'
-                      : '0x' + value.toLowerCase().replace(/^0x/i, '');
-  }
-
-  if (_.isBoolean(value)) {
-    return returnType ? 'bool' : value ? '0x01' : '0x00';
-  }
-
-  if (Buffer.isBuffer(value)) {
-    return '0x' + value.toString('hex');
-  }
-
-  if (_.isObject(value) && !isBigNumber(value) && !isBN(value)) {
-    return returnType ? 'string' : utf8ToHex(JSON.stringify(value));
-  }
-
-  // if its a negative number, pass it through numberToHex
-  if (_.isString(value)) {
-    if (value.indexOf('-0x') === 0 || value.indexOf('-0X') === 0) {
-      return returnType ? 'int256' : numberToHex(value);
-    } else if (value.indexOf('0x') === 0 || value.indexOf('0X') === 0) {
-      return returnType ? 'bytes' : value;
-    } else if (!isFinite(value)) {
-      return returnType ? 'string' : utf8ToHex(value);
+    if (isAddress(value)) {
+        return returnType
+            ? "address"
+            : "0x" + value.toLowerCase().replace(/^0x/i, "");
     }
-  }
 
-  return returnType ? (value < 0 ? 'int256' : 'uint256') : numberToHex(value);
+    if (_.isBoolean(value)) {
+        return returnType ? "bool" : value ? "0x01" : "0x00";
+    }
+
+    if (Buffer.isBuffer(value)) {
+        return "0x" + value.toString("hex");
+    }
+
+    if (_.isObject(value) && !isBigNumber(value) && !isBN(value)) {
+        return returnType ? "string" : utf8ToHex(JSON.stringify(value));
+    }
+
+    // if its a negative number, pass it through numberToHex
+    if (_.isString(value)) {
+        if (value.indexOf("-0x") === 0 || value.indexOf("-0X") === 0) {
+            return returnType ? "int256" : numberToHex(value);
+        } else if (value.indexOf("0x") === 0 || value.indexOf("0X") === 0) {
+            return returnType ? "bytes" : value;
+        } else if (!isFinite(value)) {
+            return returnType ? "string" : utf8ToHex(value);
+        }
+    }
+
+    return returnType ? (value < 0 ? "int256" : "uint256") : numberToHex(value);
 };
 
 /**
@@ -373,8 +410,9 @@ var toHex = function(value, returnType) {
  * @returns {Boolean}
  */
 var isHexStrict = function(hex) {
-  return ((_.isString(hex) || _.isNumber(hex)) &&
-          /^(-)?0x[0-9a-f]*$/i.test(hex));
+    return (
+        (_.isString(hex) || _.isNumber(hex)) && /^(-)?0x[0-9a-f]*$/i.test(hex)
+    );
 };
 
 /**
@@ -385,8 +423,10 @@ var isHexStrict = function(hex) {
  * @returns {Boolean}
  */
 var isHex = function(hex) {
-  return ((_.isString(hex) || _.isNumber(hex)) &&
-          /^(-0x|0x)?[0-9a-f]*$/i.test(hex));
+    return (
+        (_.isString(hex) || _.isNumber(hex)) &&
+        /^(-0x|0x)?[0-9a-f]*$/i.test(hex)
+    );
 };
 
 /**
@@ -396,7 +436,9 @@ var isHex = function(hex) {
  * @param {String} bloom encoded bloom filter
  * @return {Boolean}
  */
-var isBloom = function(bloom) { return ethereumBloomFilters.isBloom(bloom); };
+var isBloom = function(bloom) {
+    return ethereumBloomFilters.isBloom(bloom);
+};
 
 /**
  * Returns true if the ethereum users address is part of the given bloom
@@ -408,8 +450,10 @@ var isBloom = function(bloom) { return ethereumBloomFilters.isBloom(bloom); };
  * @return {Boolean}
  */
 var isUserEthereumAddressInBloom = function(bloom, ethereumAddress) {
-  return ethereumBloomFilters.isUserEthereumAddressInBloom(bloom,
-                                                           ethereumAddress);
+    return ethereumBloomFilters.isUserEthereumAddressInBloom(
+        bloom,
+        ethereumAddress
+    );
 };
 
 /**
@@ -422,7 +466,10 @@ var isUserEthereumAddressInBloom = function(bloom, ethereumAddress) {
  * @return {Boolean}
  */
 var isContractAddressInBloom = function(bloom, contractAddress) {
-  return ethereumBloomFilters.isContractAddressInBloom(bloom, contractAddress);
+    return ethereumBloomFilters.isContractAddressInBloom(
+        bloom,
+        contractAddress
+    );
 };
 
 /**
@@ -432,7 +479,9 @@ var isContractAddressInBloom = function(bloom, contractAddress) {
  * @param {String} topic encoded topic
  * @return {Boolean}
  */
-var isTopic = function(topic) { return ethereumBloomFilters.isTopic(topic); };
+var isTopic = function(topic) {
+    return ethereumBloomFilters.isTopic(topic);
+};
 
 /**
  * Returns true if the topic is part of the given bloom
@@ -443,8 +492,9 @@ var isTopic = function(topic) { return ethereumBloomFilters.isTopic(topic); };
  * @param {String} topic encoded topic
  * @return {Boolean}
  */
-var isTopicInBloom = function(
-    bloom, topic) { return ethereumBloomFilters.isTopicInBloom(bloom, topic); };
+var isTopicInBloom = function(bloom, topic) {
+    return ethereumBloomFilters.isTopicInBloom(bloom, topic);
+};
 
 /**
  * Returns true if the value is part of the given bloom
@@ -455,8 +505,9 @@ var isTopicInBloom = function(
  * @param {String | Uint8Array} topic encoded value
  * @return {Boolean}
  */
-var isInBloom = function(
-    bloom, topic) { return ethereumBloomFilters.isInBloom(bloom, topic); };
+var isInBloom = function(bloom, topic) {
+    return ethereumBloomFilters.isInBloom(bloom, topic);
+};
 
 /**
  * Hashes values to a sha3 hash using keccak 256
@@ -467,24 +518,24 @@ var isInBloom = function(
  * @return {String} the sha3 string
  */
 var SHA3_NULL_S =
-    '0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470';
+    "0xc5d2460186f7233c927e7db2dcc703c0e500b653ca82273b7bfad8045d85a470";
 
 var sha3 = function(value) {
-  if (isBN(value)) {
-    value = value.toString();
-  }
+    if (isBN(value)) {
+        value = value.toString();
+    }
 
-  if (isHexStrict(value) && /^0x/i.test((value).toString())) {
-    value = hexToBytes(value);
-  }
+    if (isHexStrict(value) && /^0x/i.test(value.toString())) {
+        value = hexToBytes(value);
+    }
 
-  var returnValue = Hash.keccak256(value); // jshint ignore:line
+    var returnValue = Hash.keccak256(value); // jshint ignore:line
 
-  if (returnValue === SHA3_NULL_S) {
-    return null;
-  } else {
-    return returnValue;
-  }
+    if (returnValue === SHA3_NULL_S) {
+        return null;
+    } else {
+        return returnValue;
+    }
 };
 // expose the under the hood keccak256
 sha3._Hash = Hash;
@@ -497,41 +548,41 @@ sha3._Hash = Hash;
  * @returns {string}
  */
 var sha3Raw = function(value) {
-  value = sha3(value);
+    value = sha3(value);
 
-  if (value === null) {
-    return SHA3_NULL_S;
-  }
+    if (value === null) {
+        return SHA3_NULL_S;
+    }
 
-  return value;
+    return value;
 };
 
 module.exports = {
-  BN : BN,
-  isBN : isBN,
-  isBigNumber : isBigNumber,
-  toBN : toBN,
-  isAddress : isAddress,
-  isBloom : isBloom,
-  isUserEthereumAddressInBloom : isUserEthereumAddressInBloom,
-  isContractAddressInBloom : isContractAddressInBloom,
-  isTopic : isTopic,
-  isTopicInBloom : isTopicInBloom,
-  isInBloom : isInBloom,
-  checkAddressChecksum : checkAddressChecksum,
-  utf8ToHex : utf8ToHex,
-  hexToUtf8 : hexToUtf8,
-  hexToNumber : hexToNumber,
-  hexToNumberString : hexToNumberString,
-  numberToHex : numberToHex,
-  toHex : toHex,
-  hexToBytes : hexToBytes,
-  bytesToHex : bytesToHex,
-  isHex : isHex,
-  isHexStrict : isHexStrict,
-  leftPad : leftPad,
-  rightPad : rightPad,
-  toTwosComplement : toTwosComplement,
-  sha3 : sha3,
-  sha3Raw : sha3Raw
+    BN: BN,
+    isBN: isBN,
+    isBigNumber: isBigNumber,
+    toBN: toBN,
+    isAddress: isAddress,
+    isBloom: isBloom,
+    isUserEthereumAddressInBloom: isUserEthereumAddressInBloom,
+    isContractAddressInBloom: isContractAddressInBloom,
+    isTopic: isTopic,
+    isTopicInBloom: isTopicInBloom,
+    isInBloom: isInBloom,
+    checkAddressChecksum: checkAddressChecksum,
+    utf8ToHex: utf8ToHex,
+    hexToUtf8: hexToUtf8,
+    hexToNumber: hexToNumber,
+    hexToNumberString: hexToNumberString,
+    numberToHex: numberToHex,
+    toHex: toHex,
+    hexToBytes: hexToBytes,
+    bytesToHex: bytesToHex,
+    isHex: isHex,
+    isHexStrict: isHexStrict,
+    leftPad: leftPad,
+    rightPad: rightPad,
+    toTwosComplement: toTwosComplement,
+    sha3: sha3,
+    sha3Raw: sha3Raw
 };
