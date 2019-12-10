@@ -4,14 +4,13 @@
 # Runs mocha tests tagged 'e2e' using an insta-mining geth dev client
 # --------------------------------------------------------------------
 
-
 # Exit immediately on error
 set -o errexit
 
 # Run cleanup on exit
 trap cleanup EXIT
 
-cleanup(){
+cleanup() {
   docker stop geth-client
 }
 

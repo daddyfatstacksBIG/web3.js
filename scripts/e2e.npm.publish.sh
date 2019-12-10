@@ -27,13 +27,14 @@ npm install -g geth-dev-assistant@0.1.3
 npm install -g lerna@3.18.3
 
 # Launch npm proxy registry
-verdaccio --config verdaccio.yml & npx wait-port 4873
+verdaccio --config verdaccio.yml &
+npx wait-port 4873
 
 # `npm add user`
 curl -XPUT \
-   -H "Content-type: application/json" \
-   -d '{ "name": "test", "password": "test" }' \
-   'http://localhost:4873/-/user/org.couchdb.user:test'
+  -H "Content-type: application/json" \
+  -d '{ "name": "test", "password": "test" }' \
+  'http://localhost:4873/-/user/org.couchdb.user:test'
 
 # `npm login`
 npm-auth-to-token \
@@ -68,4 +69,3 @@ lerna publish from-package \
   --dist-tag e2e \
   --registry http://localhost:4873 \
   --yes
-
