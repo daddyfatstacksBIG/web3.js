@@ -438,5 +438,3 @@ Example
     web3.eth.personal.importRawKey("cd3376bb711cb332ee3fb2ca04c6a8b9f70c316fcdf7a1f44ef4c7999483295e", "password1234")
     .then(console.log);
     > "0x8f337bf484b2fc75e4b0436645dcc226ee2ac531"
-
-

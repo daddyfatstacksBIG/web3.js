@@ -2,7 +2,7 @@
 
 This is a sub package of [web3.js][repo]
 
-This is the whisper v5 package.  
+This is the whisper v5 package.
 Please read the [documentation][docs] for more.
 
 ## Installation

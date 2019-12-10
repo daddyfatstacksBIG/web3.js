@@ -2,7 +2,7 @@
 
 _This is a sub package of [web3.js][repo]_
 
-This is a HTTP provider for [web3.js][repo].  
+This is a HTTP provider for [web3.js][repo].
 Please read the [documentation][docs] for more.
 
 ## Installation

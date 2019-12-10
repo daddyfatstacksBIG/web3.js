@@ -1391,4 +1391,3 @@ Example
 
     web3.utils.toTwosComplement('-0x1');
     > "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
-

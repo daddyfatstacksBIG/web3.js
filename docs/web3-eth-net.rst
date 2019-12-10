@@ -47,5 +47,3 @@ Example
     web3.eth.net.getNetworkType()
     .then(console.log);
     > "main"
-
-
