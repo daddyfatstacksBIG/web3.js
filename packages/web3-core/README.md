@@ -2,8 +2,8 @@
 
 This is a sub package of [web3.js][repo]
 
-The core package contains core functions for [web3.js][repo] packages.
-Please read the [documentation][docs] for more.
+The core package contains core functions for [web3.js][repo] packages. Please
+read the [documentation][docs] for more.
 
 ## Installation
 

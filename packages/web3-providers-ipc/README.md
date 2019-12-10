@@ -21,17 +21,17 @@ Build running the following in the [web3.js][repo] repository:
 npm run-script build-all
 ```
 
-Then include `dist/web3-providers-ipc.js` in your html file.
-This will expose the `Web3IpcProvider` object on the window object.
+Then include `dist/web3-providers-ipc.js` in your html file. This will expose
+the `Web3IpcProvider` object on the window object.
 
 ## Usage
 
 ```js
 // in node.js
-var Web3IpcProvider = require('web3-providers-ipc');
+var Web3IpcProvider = require("web3-providers-ipc");
 var net = require(net);
 
-var ipc = new Web3IpcProvider('/Users/me/Library/Ethereum/geth.ipc', net);
+var ipc = new Web3IpcProvider("/Users/me/Library/Ethereum/geth.ipc", net);
 ```
 
 ## Types

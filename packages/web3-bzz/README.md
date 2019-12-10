@@ -21,16 +21,16 @@ Build running the following in the [web3.js][repo] repository:
 npm run-script build-all
 ```
 
-Then include `dist/web3-bzz.js` in your html file.
-This will expose the `Web3Personal` object on the window object.
+Then include `dist/web3-bzz.js` in your html file. This will expose the
+`Web3Personal` object on the window object.
 
 ## Usage
 
 ```js
 // in node.js
-var Web3Bzz = require('web3-bzz');
+var Web3Bzz = require("web3-bzz");
 
-var bzz = new Web3Bzz('http://swarm-gateways.net');
+var bzz = new Web3Bzz("http://swarm-gateways.net");
 ```
 
 ## Types

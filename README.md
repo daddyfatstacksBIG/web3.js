@@ -4,13 +4,18 @@
 
 # web3.js - Ethereum JavaScript API
 
-[![Join the chat at https://gitter.im/ethereum/web3.js](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ethereum/web3.js?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)[![npm](https://img.shields.io/npm/dm/web3.svg)](https://www.npmjs.com/package/web3) [![Build Status][travis-image]][travis-url] [![dependency status][dep-image]][dep-url] [![dev dependency status][dep-dev-image]][dep-dev-url] [![Coverage Status][coveralls-image]][coveralls-url]
+[![Join the chat at https://gitter.im/ethereum/web3.js](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/ethereum/web3.js?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)[![npm](https://img.shields.io/npm/dm/web3.svg)](https://www.npmjs.com/package/web3)
+[![Build Status][travis-image]][travis-url]
+[![dependency status][dep-image]][dep-url]
+[![dev dependency status][dep-dev-image]][dep-dev-url]
+[![Coverage Status][coveralls-image]][coveralls-url]
 [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 
-This is the Ethereum [JavaScript API][docs]
-which connects to the [Generic JSON RPC](https://github.com/ethereum/wiki/wiki/JSON-RPC) spec.
+This is the Ethereum [JavaScript API][docs] which connects to the
+[Generic JSON RPC](https://github.com/ethereum/wiki/wiki/JSON-RPC) spec.
 
-You need to run a local or remote [Ethereum](https://www.ethereum.org/) node to use this library.
+You need to run a local or remote [Ethereum](https://www.ethereum.org/) node to
+use this library.
 
 Please read the [documentation][docs] for more.
 
@@ -38,15 +43,15 @@ meteor add ethereum:web3
 
 ### In the Browser
 
-Use the prebuild `dist/web3.min.js`, or
-build using the [web3.js][repo] repository:
+Use the prebuild `dist/web3.min.js`, or build using the [web3.js][repo]
+repository:
 
 ```bash
 npm run-script build
 ```
 
-Then include `dist/web3.js` in your html file.
-This will expose `Web3` on the window object.
+Then include `dist/web3.js` in your html file. This will expose `Web3` on the
+window object.
 
 ## Usage
 
@@ -64,12 +69,13 @@ console.log(web3);
 }
 ```
 
-Additionally you can set a provider using `web3.setProvider()` (e.g. WebsocketProvider):
+Additionally you can set a provider using `web3.setProvider()` (e.g.
+WebsocketProvider):
 
 ```js
-web3.setProvider('ws://localhost:8546');
+web3.setProvider("ws://localhost:8546");
 // or
-web3.setProvider(new Web3.providers.WebsocketProvider('ws://localhost:8546'));
+web3.setProvider(new Web3.providers.WebsocketProvider("ws://localhost:8546"));
 ```
 
 There you go, now you can use it:
@@ -80,16 +86,19 @@ web3.eth.getAccounts().then(console.log);
 
 ### Usage with TypeScript
 
-We support types within the repo itself. Please open an issue here if you find any wrong types.
+We support types within the repo itself. Please open an issue here if you find
+any wrong types.
 
 You can use `web3.js` as follows:
 
 ```typescript
-import Web3 from 'web3';
-const web3 = new Web3('ws://localhost:8546');
+import Web3 from "web3";
+const web3 = new Web3("ws://localhost:8546");
 ```
 
-If you are using the types in a `commonjs` module like for example a node app you just have to enable `esModuleInterop` in your `tsconfig` compile option, also enable `allowSyntheticDefaultImports` for typesystem compatibility:
+If you are using the types in a `commonjs` module like for example a node app
+you just have to enable `esModuleInterop` in your `tsconfig` compile option,
+also enable `allowSyntheticDefaultImports` for typesystem compatibility:
 
 ```js
 "compilerOptions": {
@@ -166,7 +175,9 @@ npm test
 [dep-url]: https://david-dm.org/ethereum/web3.js
 [dep-dev-image]: https://david-dm.org/ethereum/web3.js/dev-status.svg
 [dep-dev-url]: https://david-dm.org/ethereum/web3.js#info=devDependencies
-[coveralls-image]: https://coveralls.io/repos/ethereum/web3.js/badge.svg?branch=master
+[coveralls-image]:
+    https://coveralls.io/repos/ethereum/web3.js/badge.svg?branch=master
 [coveralls-url]: https://coveralls.io/r/ethereum/web3.js?branch=1.x
-[waffle-image]: https://badge.waffle.io/ethereum/web3.js.svg?label=ready&title=Ready
+[waffle-image]:
+    https://badge.waffle.io/ethereum/web3.js.svg?label=ready&title=Ready
 [waffle-url]: https://waffle.io/ethereum/web3.js

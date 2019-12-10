@@ -21,16 +21,16 @@ Build running the following in the [web3.js][repo] repository:
 npm run-script build-all
 ```
 
-Then include `dist/web3-shh.js` in your html file.
-This will expose the `Web3Personal` object on the window object.
+Then include `dist/web3-shh.js` in your html file. This will expose the
+`Web3Personal` object on the window object.
 
 ## Usage
 
 ```js
 // in node.js
-var Web3Personal = require('web3-shh');
+var Web3Personal = require("web3-shh");
 
-var shh = new Web3Personal('ws://localhost:8546');
+var shh = new Web3Personal("ws://localhost:8546");
 ```
 
 ## Types

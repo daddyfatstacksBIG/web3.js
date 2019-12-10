@@ -21,8 +21,8 @@ Build running the following in the [web3.js][repo] repository:
 npm run-script build-all
 ```
 
-Then include `dist/web3-providers-http.js` in your html file.
-This will expose the `Web3HttpProvider` object on the window object.
+Then include `dist/web3-providers-http.js` in your html file. This will expose
+the `Web3HttpProvider` object on the window object.
 
 ## Usage
 
