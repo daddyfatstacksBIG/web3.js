@@ -50,14 +50,14 @@ if [ -z "$BRANCH" ]; then
 
 fi
 
-git checkout $BRANCH --
+git checkout "$BRANCH" --
 
 # Lerna version
 lerna version patch \
   --force-publish=* \
   --no-git-tag-version \
   --no-push \
-  --allow-branch $BRANCH \
+  --allow-branch "$BRANCH" \
   --yes
 
 # Commit changes because lerna checks git before

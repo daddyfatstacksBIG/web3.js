@@ -12,7 +12,7 @@ trap cleanup EXIT
 
 cleanup() {
   if [ -n "$client" ]; then
-    kill -9 $client
+    kill -9 "$client"
   fi
 }
 
